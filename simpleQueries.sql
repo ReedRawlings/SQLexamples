@@ -1,5 +1,5 @@
 -- All queries using the Chinook-DB from https://github.com/lerocha/chinook-database
---Style guide from https://www.sqlstyle.guide/
+-- Style guide from https://www.sqlstyle.guide/
 
 -- Query for finding the amount of invoices by BillingCountry, grouped by country in descending order. 
 SELECT BillingCountry, 
@@ -8,7 +8,7 @@ SELECT BillingCountry,
  GROUP BY BillingCountry
  ORDER BY Invoices DESC;
 
---Finding the largest invoice for an individual city in order to plan an event
+-- Finding the largest invoice for an individual city in order to plan an event
 SELECT SUM(Total) AS Largest_Invoice, 
 	   BillingCity
   FROM Invoice
@@ -16,7 +16,7 @@ SELECT SUM(Total) AS Largest_Invoice,
  ORDER BY Largest_Invoice desc
  LIMIT 1;
 
---Finding the top customer in order to thank them for their continued business
+-- Finding the top customer in order to thank them for their continued business
 SELECT Customer.CustomerId, 
 	   FirstName, Email, SUM(Total) AS total_spent
   FROM Customer
@@ -26,7 +26,7 @@ SELECT Customer.CustomerId,
  ORDER BY total_spent DESC
  LIMIT 1;
 
---Query the FirstName, LastName, Email, and Genre of all individuals who listen to Rock,
+-- Query the FirstName, LastName, Email, and Genre of all individuals who listen to Rock,
 -- sorted by email ASC and does not include duplicate emails.
 SELECT DISTINCT (cu.Email), 
 	   cu.FirstName, cu.LastName, ge.Name
@@ -42,7 +42,7 @@ SELECT DISTINCT (cu.Email),
 	   AND ge.Name = 'Rock'
  ORDER BY cu.Email;
 
---Finding top artists to invite to our rock show. Shows ArtistName, Total Track Count of top 10 bands
+-- Finding top artists to invite to our rock show. Shows ArtistName, Total Track Count of top 10 bands
 SELECT art.ArtistId, 
 	   art.Name, COUNT(al.Title) AS Total_Songs
   FROM Artist AS art
@@ -57,7 +57,8 @@ SELECT art.ArtistId,
  ORDER BY Total_Songs DESC
  LIMIT 10;
 
---Which artist has earned the most according to their InvoiceLines. 
+-- Which artist has earned the most according to their InvoiceLines. The section of SQL below this is an extension of the original problem.
+-- The code is almost identical
 SELECT art.Name AS Artist_Name, 
 	   SUM(il.UnitPrice * il.Quantity) AS total_spent
   FROM Artist AS art
@@ -73,7 +74,7 @@ SELECT art.Name AS Artist_Name,
  ORDER BY total_spent DESC
  LIMIT 1; 
 
---From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
+-- From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
 SELECT art.Name AS Artist_Name, 
 	   SUM(il.UnitPrice * il.Quantity) AS total_spent, cu.CustomerId, cu.FirstName, cu.LastName
   FROM Artist AS art
