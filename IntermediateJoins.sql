@@ -84,3 +84,19 @@ SELECT cu.CustomerId, cu.Email, cu.FirstName, cu.LastName, SUM(il.UnitPrice * il
  ORDER BY total_purchase DESC
  LIMIT 10
 ;
+
+--Top genres by total purchase amount from the media store
+SELECT SUM(il.UnitPrice * il.Quantity) AS total_purchase, ge.Name
+  FROM Customer AS cu
+  JOIN Invoice AS inv
+    ON cu.CustomerId = inv.CustomerId
+  JOIN InvoiceLine AS il
+    ON inv.InvoiceId = il.InvoiceId
+  JOIN Track AS tr
+    ON il.TrackId = tr.TrackID
+  JOIN Genre AS ge
+    ON tr.GenreId = ge.GenreID
+ GROUP BY ge.Name
+ ORDER BY total_purchase DESC
+ LIMIT 5
+;
