@@ -3,8 +3,9 @@
 
 --Query the FirstName, LastName, Email, and Genre of all individuals who listen to Rock,
 -- sorted by email ASC and does not include duplicate emails.
-SELECT DISTINCT (cu.Email), 
-	   cu.FirstName, cu.LastName, ge.Name
+SELECT 
+DISTINCT (cu.Email), 
+	 cu.FirstName, cu.LastName, ge.Name
   FROM Customer AS cu
   JOIN Invoice AS ine
     ON cu.CustomerID = ine.CustomerID
@@ -34,7 +35,7 @@ SELECT art.ArtistId,
 
 --Which artist has earned the most according to their InvoiceLines. 
 SELECT art.Name AS Artist_Name, 
-	   SUM(il.UnitPrice * il.Quantity) AS total_spent
+	   SUM(il.UnitPrice * il.Quantity) AS total_purchase
   FROM Artist AS art
   JOIN Album AS al
     ON art.ArtistId = al.ArtistId
@@ -50,7 +51,7 @@ SELECT art.Name AS Artist_Name,
 
 --From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
 SELECT art.Name AS Artist_Name, 
-	   SUM(il.UnitPrice * il.Quantity) AS total_spent, cu.CustomerId, cu.FirstName, cu.LastName
+	   SUM(il.UnitPrice * il.Quantity) AS total_purchase, cu.CustomerId, cu.FirstName, cu.LastName
   FROM Artist AS art
   JOIN Album AS al
     ON art.ArtistId = al.ArtistId
@@ -66,3 +67,20 @@ SELECT art.Name AS Artist_Name,
  GROUP BY cu.CustomerId
  ORDER BY total_spent DESC
  LIMIT 1;
+
+--Top 15 customers who only purchase Rock music
+SELECT cu.CustomerId, cu.Email, cu.FirstName, cu.LastName, SUM(il.UnitPrice * il.Quantity) AS total_purchase
+  FROM Customer AS cu
+  JOIN Invoice AS inv
+    ON cu.CustomerId = inv.CustomerId
+  JOIN InvoiceLine AS il
+    ON inv.InvoiceId = il.InvoiceId
+  JOIN Track AS tr
+    ON il.TrackId = tr.TrackID
+  JOIN Genre AS ge
+    ON tr.GenreId = ge.GenreID
+   AND ge.Name = 'Rock'
+ GROUP BY 1, ge.Name
+ ORDER BY total_purchase DESC
+ LIMIT 10
+;
