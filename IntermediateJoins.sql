@@ -1,7 +1,7 @@
 -- All queries using the Chinook-DB from https://github.com/lerocha/chinook-database
---Style guide from https://www.sqlstyle.guide/
+-- Style guide from https://www.sqlstyle.guide/
 
---Query the FirstName, LastName, Email, and Genre of all individuals who listen to Rock,
+-- Query the FirstName, LastName, Email, and Genre of all individuals who listen to Rock,
 -- sorted by email ASC and does not include duplicate emails.
 SELECT 
 DISTINCT (cu.Email), 
@@ -14,11 +14,11 @@ DISTINCT (cu.Email),
   JOIN track AS tr
     ON il.TrackId = tr.TrackId
   JOIN genre AS ge
-	ON tr.GenreId = ge.GenreID
-	   AND ge.Name = 'Rock'
+    ON tr.GenreId = ge.GenreID
+   AND ge.Name = 'Rock'
  ORDER BY cu.Email;
 
---Finding top artists to invite to our rock show. Shows ArtistName, Total Track Count of top 10 bands
+-- Finding top artists to invite to our rock show. Shows ArtistName, Total Track Count of top 10 bands
 SELECT art.ArtistId, 
 	   art.Name, COUNT(al.Title) AS Total_Songs
   FROM Artist AS art
@@ -33,7 +33,7 @@ SELECT art.ArtistId,
  ORDER BY Total_Songs DESC
  LIMIT 10;
 
---Which artist has earned the most according to their InvoiceLines. 
+-- Which artist has earned the most according to their InvoiceLines. 
 SELECT art.Name AS Artist_Name, 
 	   SUM(il.UnitPrice * il.Quantity) AS total_purchase
   FROM Artist AS art
@@ -49,7 +49,7 @@ SELECT art.Name AS Artist_Name,
  ORDER BY total_spent DESC
  LIMIT 1; 
 
---From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
+-- From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
 SELECT art.Name AS Artist_Name, 
 	   SUM(il.UnitPrice * il.Quantity) AS total_purchase, cu.CustomerId, cu.FirstName, cu.LastName
   FROM Artist AS art
@@ -68,7 +68,7 @@ SELECT art.Name AS Artist_Name,
  ORDER BY total_spent DESC
  LIMIT 1;
 
---Top 15 customers who only purchase Rock music
+-- Top 15 customers who only purchase Rock music
 SELECT cu.CustomerId, cu.Email, cu.FirstName, cu.LastName, SUM(il.UnitPrice * il.Quantity) AS total_purchase
   FROM Customer AS cu
   JOIN Invoice AS inv
@@ -85,7 +85,7 @@ SELECT cu.CustomerId, cu.Email, cu.FirstName, cu.LastName, SUM(il.UnitPrice * il
  LIMIT 10
 ;
 
---Top genres by total purchase amount from the media store
+-- Top genres by total purchase amount from the media store
 SELECT SUM(il.UnitPrice * il.Quantity) AS total_purchase, ge.Name
   FROM Customer AS cu
   JOIN Invoice AS inv
