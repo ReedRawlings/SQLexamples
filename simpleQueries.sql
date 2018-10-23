@@ -17,7 +17,7 @@ SELECT SUM(Total) AS Largest_Invoice,
  LIMIT 1;
 
 -- Finding the top customer in order to thank them for their continued business
-SELECT Customer.CustomerId, 
+SELECT Customer.CustomerId AS c_Id, 
 	   FirstName, Email, SUM(Total) AS total_spent
   FROM Customer
   JOIN Invoice
