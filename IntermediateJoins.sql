@@ -46,7 +46,7 @@ SELECT art.Name AS Artist_Name,
   JOIN Invoice as inv
     ON il.InvoiceId = inv.InvoiceId
  GROUP BY art.Name
- ORDER BY total_spent DESC
+ ORDER BY total_purchase DESC
  LIMIT 1; 
 
 -- From the previous query which customer spent the most on a single InvoiceLine on the highest grossing band. In this case, Iron Maiden
@@ -82,7 +82,7 @@ SELECT cu.CustomerId, cu.Email, cu.FirstName, cu.LastName, SUM(il.UnitPrice * il
    AND ge.Name = 'Rock'
  GROUP BY 1, ge.Name
  ORDER BY total_purchase DESC
- LIMIT 10
+ LIMIT 15
 ;
 
 -- Top genres by total purchase amount from the media store
